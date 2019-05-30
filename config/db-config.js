@@ -18,8 +18,8 @@ var config = {
         DB_SERVER: 'localhost',
         DB_PORT: '27017',
         DB_NAME: 'event',
-        DB_USERNAME: '',
-        DB_PASSWORD: ''
+        DB_USERNAME: 'raja',
+        DB_PASSWORD: 'iYM6rlXQ0uGmFMTL'
     }
 };
 
