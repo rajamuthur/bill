@@ -1,0 +1,3 @@
+server cmd list:
+npm install express path express-fileupload mongoose bcrypt --save
+npm install moment --save
