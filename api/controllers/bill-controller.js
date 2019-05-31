@@ -163,6 +163,7 @@ function getBill(req, res) {
 function updateBill(req, res) {
     let inputData = req.body;
     let userId = req.params.id;
+    console.log('updateBill inputData:', inputData)
     async.waterfall([
         function (done) {
             if (!inputData.purchased_date) {

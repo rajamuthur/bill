@@ -20,8 +20,8 @@ var ClientRoutes = require('./api/middleware/client_routing');
 //Connect to DB
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://' + DBCONFIG.DB_SERVER + ':' + DBCONFIG.DB_PORT + '/' + DBCONFIG.DB_NAME, { useNewUrlParser: true });
- mongoose.connect('mongodb+srv://raja:iYM6rlXQ0uGmFMTL@cluster0-3dcry.mongodb.net/event?retryWrites=true', { useNewUrlParser: true });
-//mongoose.connect('mongodb+srv://' + DBCONFIG.DB_USERNAME + ':' + DBCONFIG.DB_PASSWORD + '@cluster0-3dcry.mongodb.net'+'/' + DBCONFIG.DB_NAME + '?retryWrites=true', { useNewUrlParser: true });
+// mongoose.connect('mongodb+srv://raja:iYM6rlXQ0uGmFMTL@cluster0-3dcry.mongodb.net/event?retryWrites=true', { useNewUrlParser: true });
+mongoose.connect('mongodb+srv://' + DBCONFIG.DB_USERNAME + ':' + DBCONFIG.DB_PASSWORD + '@cluster0-3dcry.mongodb.net'+'/' + DBCONFIG.DB_NAME + '?retryWrites=true', { useNewUrlParser: true });
 
 //Debug
 mongoose.set("debug", (collectionName, method, query, doc) => {

@@ -78,6 +78,7 @@ function deleteBill(billId) {
 }
 
 function updateBill(billId, dataSet) {
+    console.log('updateBill dataSet:', dataSet)
     return new Promise(function (resolve, reject) {
         billModel.findOneAndUpdate({ _id: billId}, {
             $set: dataSet
