@@ -92,13 +92,13 @@ function getSearchCondition(searchCondition, fieldList) {
             if (typeof val == 'string') {
                 sCondition[name] = val;
             }
-            let isValidDate = typeof val['dateFrom'] != 'undefined' && moment(val['dateFrom'], "YYYY-MM-DD HH:mm", true).isValid() && typeof val['dateTo'] != 'undefined' && moment(val['dateTo'], "YYYY-MM-DD HH:mm", true).isValid() ? true : false;
-            console.log('fromDate: ', val['dateFrom'], 'toDate:', val['dateTo'], 'isValidDate:', isValidDate, moment(val['dateTo'], "YYYY-MM-DD HH:mm", true).isValid());
+            let isValidDate = typeof val['dateFrom'] != 'undefined' && moment.unix(val['dateFrom']).isValid() && typeof val['dateTo'] != 'undefined' && moment.unix(val['dateTo']).isValid() ? true : false;
+            console.log(val,'fromDate: ', val['dateFrom'], 'toDate:', val['dateTo'], 'isValidDate:', isValidDate, moment.unix(val['dateTo']).toDate());
             if (isValidDate) {
-                let fromDate = val['dateFrom'];
-                let toDate = val['dateTo'];
+                let fromDate = new Date(val['dateFrom']);
+                let toDate = new Date(val['dateTo']);
                 console.log('fromDate: ', fromDate, 'toDate:', toDate);
-                sCondition[name] = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+                sCondition[name] = { $gte: fromDate, $lte: toDate };
             }
             if (name == '_id') {
                 if (typeof val == 'string') { // _id: "5c94db82b370a610b422684d"

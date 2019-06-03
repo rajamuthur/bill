@@ -4,6 +4,7 @@ var billService = require('../services/bill-service');
 var categoryService = require('../services/category-service');
 var itemService = require('../services/item-service');
 const config = require('../../config');
+const moment = require('moment');
 var utilities = require('../../common/utilities');
 const STATUS_CODE = config.APP_CONSTANTS.STATUS_CODE;
 const async = require('async');
@@ -171,6 +172,9 @@ function updateBill(req, res) {
             } else if (!inputData.amount) {
                 done({ message: 'Amount is required' });
             } else {
+                // let purchased_date = moment(inputData['purchased_date']).utc().toDate();
+                // let purchased_date = moment.unix(inputData['purchased_date']).toDate();
+                // console.log('purchased_date::', purchased_date, 'uploadFileExtension:', inputData['purchased_date'])
                 const uploadFileExtension = (req.files && req.files.document_name) ? path.extname(req.files.document_name.name) : "";
                 let imgName = uploadFileExtension != '' ? 'img_' + Date.now() + uploadFileExtension : '';
                 console.log('imgName::', imgName, 'uploadFileExtension:', uploadFileExtension)
