@@ -65,7 +65,7 @@ app.use(function (err, req, resp, next) {
 });
 
 app.get('/', (req, resp) => {
-  resp.redirect('/login');
+  resp.send('Welcome')
 });
 
 app.use('/api', apiRouter(express.Router()));
