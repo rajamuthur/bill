@@ -1,1 +1,3 @@
-files/
+files/*
+files/uploads/*
+files/uploads/image/*
