@@ -7,8 +7,9 @@ var billsSchema = new Schema({
         name: String,
         display_name: String,
         amount: Number,
-        purchased_date: Date,        
+        purchased_date: Date,
         document_name: String,
+        type: String,
         comments: String,
         created_by: String,
         _category: String, //Custom field for response alone
