@@ -73,7 +73,7 @@ var ClientRoutes = require('./api/middleware/client_routing')
 app.use(express.static('files')); //Web Client routes
 app.use(express.static('client')); //Web Client routes
 app.use(express.static(path.join(__dirname, 'client'))); //Web Client routes
-app.use(ClientRoutes(path.join(__dirname + '/', 'client', 'index.html')))
+app.use(ClientRoutes(path.join(__dirname + '/../server/', 'client', 'index.html')))
 
 //app.use(ClientRoutes(path.join(__dirname, 'client', 'index.html'))); //\ accepts the file path which is served against the matching routes/rules
 
