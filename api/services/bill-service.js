@@ -84,7 +84,7 @@ function updateBill(billId, dataSet) {
             $set: dataSet
         })
             .then(bill => {
-                console.log('updateCategory: ', bill)
+                console.log('updateCategory resp: ', bill)
                 if (!bill) {
                     reject({ 'code': 400, 'message': 'Bill not found with id: ' + billId, 'data': [] });
                 }

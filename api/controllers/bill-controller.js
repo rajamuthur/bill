@@ -176,11 +176,14 @@ function updateBill(req, res) {
                 // let purchased_date = moment.unix(inputData['purchased_date']).toDate();
                 // console.log('purchased_date::', purchased_date, 'uploadFileExtension:', inputData['purchased_date'])
                 const uploadFileExtension = (req.files && req.files.document_name) ? path.extname(req.files.document_name.name) : "";
-                let imgName = uploadFileExtension != '' ? 'img_' + Date.now() + uploadFileExtension : '';
+                let imgName = uploadFileExtension != '' ? 'img_' + moment(new Date()).format("DD-MM-YYYY-HH-mm") +'_'+ Date.now() + uploadFileExtension : '';
                 console.log('imgName::', imgName, 'uploadFileExtension:', uploadFileExtension)
                 done(null, imgName);
             }
         }, function (imgName, done) {
+            if(inputData.deleteImageName) {
+                utilities.deleteImageFile(inputData.deleteImageName);
+            }
             if (imgName != '') {
                 utilities.uploadImgFile(req, imgName).then(() => {
                     done(null, imgName)
@@ -195,7 +198,7 @@ function updateBill(req, res) {
             if (inputData.name && inputData.name != '') {
                 inputData.name = inputData.name.toLowerCase();
                 itemService.isItemExists(inputData.name).then(function (data) {
-                    console.log('item not exists11111111111: ', data)
+                    console.log('item not exists: ', data)
                     done(null, imgName, '-1');
                 }).catch((err) => {
                     if (err.data && err.data.length > 0) {

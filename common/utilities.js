@@ -22,6 +22,7 @@ module.exports = {
     filterByValueFromList: filterByValueFromList,
     getObjectKeyAndValFromList: getObjectKeyAndValFromList,
     uploadImgFile: uploadImgFile,
+    deleteImageFile: deleteImageFile,
     createImageFolder: createImageFolder
 }
 
@@ -142,6 +143,17 @@ function getSearchCondition(searchCondition, fieldList) {
         condition['$and'] = conditionList;
     }
     return condition;
+}
+
+function deleteImageFile(fileName) {
+    const path = './files/uploads/image/'+fileName
+
+    try {
+      fs.unlinkSync(path)
+      console.log('removed image: ', path)
+    } catch(err) {
+      console.error('Failed to remove image err:',err, path)
+    }
 }
 
 function uploadImgFile(req, fileName) {
