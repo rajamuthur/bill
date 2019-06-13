@@ -8,6 +8,7 @@ const config = require('../config');
 const FILES_PATH = config.APP_CONFIG.PATHS.FILES;
 const uploadImgFolder = FILES_PATH.UPLOADS_IMG;
 var ObjectId = require('mongoose').Types.ObjectId
+var fs = require('fs');
 
 module.exports = {
     getNewToken: getNewToken,
@@ -20,7 +21,8 @@ module.exports = {
     addCustomFieldIntoList: addCustomFieldIntoList,
     filterByValueFromList: filterByValueFromList,
     getObjectKeyAndValFromList: getObjectKeyAndValFromList,
-    uploadImgFile: uploadImgFile
+    uploadImgFile: uploadImgFile,
+    createImageFolder: createImageFolder
 }
 
 
@@ -62,6 +64,26 @@ function genearteHashForPassword(password) {
 function validatePassword(password, hashPassword) {
     // compare the hash saved in DB with the user supplied password
     return bcrypt.compareSync(password, hashPassword);
+}
+
+function createImageFolder() {
+    let dir = './files';
+
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+
+    dir = './files/uploads'
+
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+
+    dir = './files/uploads/image'
+
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
 }
 
 function isValidISODate(dateString) {

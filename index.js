@@ -64,6 +64,10 @@ app.use(function (err, req, resp, next) {
   resp.status(500).send('Unable to process the request....')
 });
 
+//Create image folder once server started
+var utilities = require('./common/utilities');
+utilities.createImageFolder();
+
 app.get('/', (req, resp) => {
   resp.redirect('/login');
 });
