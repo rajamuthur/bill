@@ -107,7 +107,7 @@ function getBillsBySearch(req, res) {
                     if(searchData['category']) {
                         billData = utilities.filterByValueFromList(billData, '_category', searchData['category']);
                     }
-                    console.log('Successfully fetched category and billData:', billData);
+                    console.log('Successfully fetched category:');
                     if(req.body['sumByBillDate']) {
                         billData = sumByDate(billData, 'amount', '_category', 'purchased_date');
                     }

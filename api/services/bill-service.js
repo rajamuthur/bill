@@ -36,7 +36,7 @@ function getBillBySearch(searchData) {
     console.log('getBillBySearch searchCondition: ',searchCondition, 'searchData:', searchData, 'collectionFields:', collectionFields)
     return new Promise(function (resolve, reject) {
         billModel.find(searchCondition).then(function (data) {
-            console.log('getBillBySearch data: ', data)
+            console.log('getBillBySearch data: ', JSON.stringify(data))
             if (Object.keys(data).length > 0) {
                 resolve(data);
             } else {

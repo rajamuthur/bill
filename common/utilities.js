@@ -114,6 +114,11 @@ function getSearchCondition(searchCondition, fieldList) {
         if (fieldList.includes(name)) {
             if (typeof val == 'string') {
                 sCondition[name] = val;
+                console.log('string fieldName: ', name, 'val:', val);
+            }
+            if (typeof val == 'object' && val.length > 0) {
+                sCondition[name] = { $in: val };
+                console.log('array fieldName: ', name, 'val:', val);
             }
             let isValidDate = typeof val['dateFrom'] != 'undefined' && moment.unix(val['dateFrom']).isValid() && typeof val['dateTo'] != 'undefined' && moment.unix(val['dateTo']).isValid() ? true : false;
             console.log(val,'fromDate: ', val['dateFrom'], 'toDate:', val['dateTo'], 'isValidDate:', isValidDate, moment.unix(val['dateTo']).toDate());
@@ -220,7 +225,7 @@ function filterByValueFromList(data, fieldName, valueList) {
     if (data && data.length > 0) {
         for (let j = 0; j < data.length; j++) {
             if (data[j][fieldName]) {
-                console.log('value: ', typeof valueList, data[j][fieldName], valueList)
+                // console.log('value: ', typeof valueList, data[j][fieldName], valueList)
                 if (typeof valueList == 'string' && data[j][fieldName] == valueList) {
                     resp.push(data[j]);
                 } else if (typeof valueList == 'object' && valueList.indexOf(data[j][fieldName]) !== -1) {
@@ -229,7 +234,7 @@ function filterByValueFromList(data, fieldName, valueList) {
             }
         }
     }
-    console.log('filterByValueFromList data: ', data, 'fieldName: ', fieldName, 'valueList:', valueList, 'resp:', resp)
+    // console.log('filterByValueFromList data: ', data, 'fieldName: ', fieldName, 'valueList:', valueList, 'resp:', resp)
     return resp;
 }
 
@@ -247,7 +252,7 @@ function addCustomFieldIntoList(data, customFieldName, mappedFieldName, mappedOb
             data[j][customFieldName] = val;
         }
     }
-    console.log('addCustomFieldIntoList data: ', data, 'customFieldName: ', customFieldName, 'mappedFieldName:', mappedFieldName, 'mappedObjList:', mappedObjList)
+    // console.log('addCustomFieldIntoList data: ', data, 'customFieldName: ', customFieldName, 'mappedFieldName:', mappedFieldName, 'mappedObjList:', mappedObjList)
     return data;
 }
 

@@ -29,7 +29,6 @@ function getAllItemByName(req, res, next) {
                 done(null, []);
             } else {
                 billService.getBillBySearch({ 'filter': { 'created_by': req.user.id } }).then(function (data) {
-                    console.log('getBillBySearch data: ', data);
                     done(null, data);
                 }).catch((err) => {
                     console.log('getBillBySearch err: ', err);
