@@ -55,20 +55,22 @@ function getAllItem() {
 //             _id : { $in: [ObjectId("5cdac12db3deae40c8fbd2d5"), ObjectId("5ccfed6b1c9d440000291bda")] } 
 //         }
 //     ]})
-function getAllItemByName(name, itemIds = []) {
+function getAllItemByName(name = '', itemIds = []) {
     return new Promise(function (resolve, reject) {
         console.log('getAllItemByName data: ', name, 'itemIds:', itemIds)
-
-        itemModel.find({
+        let sqlCondition = {
             $or: [
-                {
-                    $and: [{ is_approved: true }, { name: { $regex: `.*${name}.*`, $options: 'si' } }]
-                },
                 {
                     _id: { $in: itemIds }
                 }
             ]
-        }).then(function (data) {
+        }
+        if(name != '') {
+            sqlCondition['$or'].push({
+                $and: [{ is_approved: true }, { name: { $regex: `.*${name}.*`, $options: 'si' } }]
+            });
+        }
+        itemModel.find(sqlCondition).then(function (data) {
             if (Object.keys(data).length > 0) {
                 resolve(data);
             } else {

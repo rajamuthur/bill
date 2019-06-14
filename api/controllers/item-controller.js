@@ -28,7 +28,8 @@ function getAllItemByName(req, res, next) {
             if (isAdmin) {
                 done(null, []);
             } else {
-                billService.getBillBySearch({ 'filter': { 'created_by': req.user.id } }).then(function (data) {
+                billService.getBillBySearch({ 'created_by': req.user.id }).then(function (data) {
+                    console.log('getBillBySearch data: ', data.length);
                     done(null, data);
                 }).catch((err) => {
                     console.log('getBillBySearch err: ', err);
@@ -38,7 +39,7 @@ function getAllItemByName(req, res, next) {
         },
         function (itemData, done) {
             let name = req.query.name.toLowerCase();
-            console.log('getAllItemByName itemData: ', itemData);
+            console.log('getAllItemByName itemData: ', itemData.length, 'userId: ', req.user.id);
             let itemIds = utilities.getObjectIdsFromList(itemData, 'name', true);
             itemService.getAllItemByName(name, itemIds).then(function (data) {
                 done(null, data);
