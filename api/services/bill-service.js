@@ -9,6 +9,7 @@ service.getAllBills = getAllBills;
 service.updateBill = updateBill;
 service.deleteBill = deleteBill;
 service.getBillBySearch = getBillBySearch;
+service.getBillBySearchWithLimit = getBillBySearchWithLimit;
 service.getBillById = getBillById;
 module.exports = service;
 
@@ -26,6 +27,29 @@ function addBill(billData) {
         }).catch((err) => {
             console.log('Failed to add bill detail: err: ', err)
             reject({ 'code': 500, 'message': 'Failed to add bill details-2', 'data': [] });
+        })
+    });
+}
+
+function getBillBySearchWithLimit(searchData, limitCnt, skipCnt, sortField = '', sortDirection = 'asc') {
+    let collectionFields = utilities.getFieldListBySchema(billModel.schema);
+    let searchCondition = utilities.getSearchCondition(searchData, collectionFields);
+    sortDirection = sortDirection == 'asc' ? '1': '-1';
+    let sortObj = {};
+    if(sortField != '') {
+        sortObj[sortField] = sortDirection;
+    }
+    console.log('getBillBySearch searchCondition: ',searchCondition, 'searchData:', searchData, 'collectionFields:', collectionFields, 'limitCnt:', limitCnt, 'skipCnt:', skipCnt)
+    return new Promise(function (resolve, reject) {
+        billModel.find(searchCondition).sort(sortObj).skip(skipCnt).limit(limitCnt).then(function (data) {
+            console.log('getBillBySearch data: ', JSON.stringify(data))
+            if (Object.keys(data).length > 0) {
+                resolve(data);
+            } else {
+                resolve([]);
+            }
+        }).catch((err) => {
+            reject({ 'code': 500, 'message': 'Failed to get all bill details with search', 'data': [] });
         })
     });
 }

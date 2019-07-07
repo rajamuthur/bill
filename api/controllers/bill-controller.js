@@ -16,6 +16,7 @@ billController.getBill = getBill;
 billController.updateBill = updateBill;
 billController.addBill = addBill;
 billController.getBillsBySearch = getBillsBySearch;
+billController.getBillBySearchWithLimit = getBillBySearchWithLimit;
 module.exports = billController;
 
 
@@ -92,6 +93,65 @@ function getBillsBySearch(req, res) {
                 searchData['created_by'] = req.user.id;
             }
             billService.getBillBySearch(searchData).then(function (data) {
+                done(null, data);
+            }).catch((err) => {
+                done(err);
+            });
+        },
+        function(billData, done) {
+            if(billData.length > 0) {
+                let itemIds = utilities.getObjectIdsFromList(billData, 'name', true);
+                let filterItemData = {'_id': { $in: itemIds }}
+                itemService.getAllItemBySearch(filterItemData).then(function (itemData) {
+                    let mappedItemObj = utilities.getObjectKeyAndValFromList(itemData, '_id', 'category');
+                    billData = utilities.addCustomFieldIntoList(billData, '_category', 'name', mappedItemObj);
+                    if(searchData['category']) {
+                        billData = utilities.filterByValueFromList(billData, '_category', searchData['category']);
+                    }
+                    console.log('Successfully fetched category:');
+                    if(req.body['sumByBillDate']) {
+                        billData = sumByDate(billData, 'amount', '_category', 'purchased_date');
+                    }
+                    done(null, billData);
+                }).catch((err) => {
+                    console.log('Failed to get category ids err: ', err);
+                    done(err)
+                });
+            } else {
+                done(null, billData);
+            }
+        }
+    ], function (err, data) {
+        if (err) {
+            console.log('getBillsBySearch err: ', err);
+            if (err.code && err.code > 0) {
+                return res.status(err.code).json({ error: { message: err.message }, error_info: err.info });
+            } else {
+                return res.status(STATUS_CODE.BAD_REQUEST).json({ error: { message: err.message }, error_info: err.info });
+            }
+        } else {
+            console.log('getBillsBySearch final data: ', JSON.stringify(data));
+            return res.status(STATUS_CODE.SUCCESS).json({ success: { message: 'Successfully  fetched all bills details withe search.' }, result: { 'data': data } });
+        }
+    });
+}
+
+
+function getBillBySearchWithLimit(req, res) {
+    let searchData = req.body['filter'] || {};
+    console.log('config.APP_CONSTANTS.SEARCH_CONSTANTS:', config.APP_CONSTANTS.SEARCH_CONSTANTS)
+    let limit = req.body['limit'] || 2;
+    let skip = req.body['skip'] || 0;
+    let sortField = req.body['sortField'] || '';
+    let sortDirection = req.body['sortDirection'] || 'asc';
+    // let isAdmin = req.user.group == 'admin' ? true : false;
+    let isAdmin = true;
+    async.waterfall([
+        function (done) {
+            if(!isAdmin) {
+                searchData['created_by'] = req.user.id;
+            }
+            billService.getBillBySearchWithLimit(searchData, limit, skip, sortField, sortDirection).then(function (data) {
                 done(null, data);
             }).catch((err) => {
                 done(err);
